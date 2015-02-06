@@ -21,7 +21,16 @@
 
         %1c
         \item No; to be admissible, an heuristic must never over-estimate the cost of a path; this heuristic will always over-estimate the cost for any square from which the knight can capture the king (the cost will be one, but the heuristic value will be three), among others.
-            
+
+        %1d
+        \item 
+            \begin{tabular}{|l|l|l|}
+                \hline
+                    Current position & Frontier & Expanded \\\hline
+                    D & M:2 & \\\hline
+                    M & P:3, T:3, V:3, X:3, B:5, F:5, J:5 & D \\\hline
+                \hline
+            \end{tabular}
     \end{enumerate}
 \end{enumerate}
 
