@@ -1,5 +1,5 @@
-public class Math() {
-    public int abs (int x) {
+public class Math {
+    public static int abs (int x) {
         return (x > 0 ? x : -x);
     }
 }
