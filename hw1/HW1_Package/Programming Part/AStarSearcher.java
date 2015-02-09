@@ -42,7 +42,7 @@ public class AStarSearcher extends Searcher {
         open.add(new StateFValuePair(
                 new State(maze.getPlayerSquare(), null, 0, 0),
                 Math.abs(maze.getPlayerSquare().X - maze.getGoalSquare().X)
-                    + Math.abs(maze.getPlayerSquare().Y - maze.getGoalSquare().y)
+                    + Math.abs(maze.getPlayerSquare().Y - maze.getGoalSquare().Y)
         ));
 
 		while (!open.isEmpty()) {
@@ -63,27 +63,33 @@ public class AStarSearcher extends Searcher {
                 return true;
             }
 
+            boolean add = true;
+
             for (State successor : state.getSuccessors(closed, maze)) {
                 //shit
                 // I'm not keeping track of closed as a boolean here,
                 // because under some circumstances, we'll want to re-add
                 // nodes to the graph.
+
                 for (State prior : expanded) {
                     // I could use more conditions here, but it's easer to
                     // just layer the ifs
                     if (prior.getX() == successor.getX() && prior.getY() == successor.getY()) {
                         // we don't need to compute f(), as h() is fixed
                         // for the x and y coords, which are equal
-                        if (successor.getGValue() < prior.getGValue()) {
-                            // we want to add successor, even though we've
-                            // already visited a node at the same place
-                            open.add(new StateFValuePair(successor,
-                                    successor.getGValue()
-                                    + Math.abs(successor.getX() - maze.getGoalSquare().X)
-                                    + Math.abs(successor.getY() - maze.getGoalSquare().Y)
-                            ));
+                        if (successor.getGValue() > prior.getGValue()) {
+                            // we only want to add successor if the same
+                            // node has not yet been visited at lower cost
+                            add = false;
                         }
                     }
+                }
+                if (add) {
+                    open.add(new StateFValuePair(successor,
+                            successor.getGValue()
+                            + Math.abs(successor.getX() - maze.getGoalSquare().X)
+                            + Math.abs(successor.getY() - maze.getGoalSquare().Y)
+                    ));
                 }
             }
 		}
