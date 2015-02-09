@@ -67,7 +67,6 @@ public class DepthFirstSearcher extends Searcher {
             for (int i = 0; i < successors.size(); i++) {
                 State successor = successors.get(i);
                 stack.push(successor);
-                System.out.println(successor.getY() + ", " + successor.getX() + "added to stack.");
             }
 
 			// use stack.pop() to pop the stack.
