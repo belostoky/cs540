@@ -53,6 +53,7 @@ public class AStarSearcher extends Searcher {
 			// use open.poll() to extract the minimum stateFValuePair.
 			// use open.add(...) to add stateFValue pairs
             State state = open.poll().getState();
+            ++noOfNodesExpanded;
             if (state.isGoal(maze)) {
                 cost = state.getGValue();
                 state = state.getParent();
