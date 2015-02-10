@@ -53,6 +53,7 @@ public class AStarSearcher extends Searcher {
 			// use open.poll() to extract the minimum stateFValuePair.
 			// use open.add(...) to add stateFValue pairs
             State state = open.poll().getState();
+            closed[state.getX()][state.getY()] = true;
             ++noOfNodesExpanded;
             if (state.isGoal(maze)) {
                 cost = state.getGValue();
@@ -64,34 +65,14 @@ public class AStarSearcher extends Searcher {
                 return true;
             }
 
-            boolean add = true;
 
             for (State successor : state.getSuccessors(closed, maze)) {
-                //shit
-                // I'm not keeping track of closed as a boolean here,
-                // because under some circumstances, we'll want to re-add
-                // nodes to the graph.
 
-                for (State prior : expanded) {
-                    // I could use more conditions here, but it's easer to
-                    // just layer the ifs
-                    if (prior.getX() == successor.getX() && prior.getY() == successor.getY()) {
-                        // we don't need to compute f(), as h() is fixed
-                        // for the x and y coords, which are equal
-                        if (successor.getGValue() > prior.getGValue()) {
-                            // we only want to add successor if the same
-                            // node has not yet been visited at lower cost
-                            add = false;
-                        }
-                    }
-                }
-                if (add) {
-                    open.add(new StateFValuePair(successor,
-                            successor.getGValue()
-                            + Math.abs(successor.getX() - maze.getGoalSquare().X)
-                            + Math.abs(successor.getY() - maze.getGoalSquare().Y)
-                    ));
-                }
+                open.add(new StateFValuePair(successor,
+                        successor.getGValue()
+                        + Math.abs(successor.getX() - maze.getGoalSquare().X)
+                        + Math.abs(successor.getY() - maze.getGoalSquare().Y)
+                ));
             }
 		}
 
