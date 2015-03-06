@@ -24,17 +24,9 @@
     \item
     \begin{enumerate}
         %3a
-        \item Set temperature to 0 for the duration of the algorithm, so that probability of choosing a worse value is 0 (because this would require changing the algorithm so it does not stop at $T=0$, an alternative is to define a different probability function so that $(\forall \Delta E < 0)P(\Delta E, T = 0)$).
+        \item
 
         \item \textcolor{white}{.}\vspace{-12pt}\\%I am king of workarounds
-            \begin{tabular}{|c|c|c|c|}
-                \hline
-                \textbf{Current State's Evaluation} & \textbf{Neighbor State's Evaluation} & \textbf{Temperature} & \textbf{Probability} \\\hline
-                16 & 15 & 20 & \textbf{0.95123} \\\hline
-                25 & 13 & 25 & \textbf{0.61878} \\\hline
-                76 & 75 & 276 & \textbf{0.99638} \\\hline
-                1256 & 1378 & 100 & \textbf{1}* \\\hline
-            \end{tabular}\\\\
             *The probability function would evaluate to 3.38719 for these values, but it would be skipped because the neighboring value is greater than the current value, so the move would be taken with probability 1.
     \end{enumerate}
 \end{enumerate}

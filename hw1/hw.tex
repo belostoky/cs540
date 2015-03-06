@@ -5,6 +5,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{mathtools}
+\usepackage{color}
 \usepackage[margin=2cm]{geometry}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
@@ -26,10 +27,13 @@
             Solution path: $D{\rightarrow}M{\rightarrow}B{\rightarrow}K{\rightarrow}V{\rightarrow}S{\rightarrow}H{\rightarrow}Q{\rightarrow}F{\rightarrow}C{\rightarrow}L{\rightarrow}U{\rightarrow}R$
 
         %1b
-        \item%TODO: include image of drawn trees, or find a package to do it nicely
+        \item \textcolor{white}{.}\\ 
+            \includegraphics[width=0.9\textwidth]{1b}
 
         %1c
         \item No; to be admissible, an heuristic must never over-estimate the cost of a path; this heuristic will always over-estimate the cost for any square from which the knight can capture the king (the cost will be one, but the heuristic value will be three), among others.
+
+\pagebreak
 
         %1d
         \item Solution path: $D{\rightarrow}M{\rightarrow}T{\rightarrow}I{\rightarrow}R$, cost 4.\\

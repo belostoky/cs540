@@ -1,0 +1,18 @@
+Game playing as a problem for AI research:
+    non-trivial
+        can be complex
+        requires time-limited decision making
+    usually
+        well-defined and repeatable
+        fully observable and limited environments
+    can directly compare humans and computers
+
+
+TYpes
+    zero-sum
+    discrete
+    finite
+    deterministic
+    perfect information
+
+Minimax: use utility function, assume opponent makes the best move possible, find maximum utility move considering that.

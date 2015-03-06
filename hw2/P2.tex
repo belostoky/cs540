@@ -1,4 +1,4 @@
-%This is the homework 2 latex file for problem 3
+%This is the homework 2 latex file for problem 2
 
 \documentclass{article}
 \usepackage{amsfonts}
@@ -6,12 +6,17 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage{color}
+\usepackage{fancyhdr}
 \usepackage[margin=2cm]{geometry}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\pagestyle{fancy}
 
 
 \begin{document}
+\fancyhfoffset[L]{0cm}
+\fancyhfoffset[R]{0cm}
+\chead{Tyler Ayrton Stank}
 
 \begin{enumerate}
     \setcounter{enumi}{1}
@@ -19,9 +24,35 @@
     \item
     \begin{enumerate}
         %2a
-        \item 
+        \item Simple hill-climbing will fail to find a global optimum for TSP.
+            A local optimum will be found, but is quite likely except in small instances of the problem to be far worse than the globally optimum solution.
 
+        %2b
         \item 
+            $$\sum_{i = 1}^{n-1}{i} = n\times\frac{1+n-1}{2} = \frac{n^2}{2}$$
+            The first chosen city can be swapped with any of $n-1$ cities (that is, any city except itself).
+            The second can be swapped only with $n-2$ cities to create unique solutions, as swapping it with the first city would yield a result that has already been found (namely, by swapping the first city with the second).
+            The third can be swapped with $n-3$, as swapping with either of the first two creates non-unique solutions.
+            This pattern continues until the $n$th city is reached, which cannot be swapped with any city to create a unique solution (i.e. its number of valid swaps is $n-n = 0$.
+            Therefore, the number of possible swaps for a city considered in $i$th place is $n-i$, and so the solution to this problem is the sum of all numbers between $n-1$ and $0$, which is equivalent to the same sum in the opposite order, excluding 0, which does not change the sum (the above formula).
+            This assumes the algorithm considers two tours which are inverses or rotations to be two different tours, though their lengths will necessarily be equal (e.g. M--N--C--L and L--C--N--M, or M--N--C--L and N--C--L--M).
+
+        %2c
+        \item
+        \begin{enumerate}
+            %2c i
+            \item The successor state will be either [LA--Madison--Chicago--NYC] or [NYC--Chicago--Madison--LA].
+
+            %2c ii
+            \item The global optimum is found.
+                The sequence of states is:
+                \begin{center}
+                    NYC--Madison--Chicago--LA \\
+                    Madison--NYC--Chicago--LA OR NYC--Madison--LA--Chicago\\
+                \end{center}
+                This will, as stated earlier, not necessarily be the case, but for this specific instance the optimum is found.
+        \end{enumerate}
+
     \end{enumerate}
 \end{enumerate}
 

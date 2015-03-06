@@ -1,0 +1,12 @@
+Genetic algorithms
+    Keep a population of individuals that are solutions
+    Explore solution space by having these interact and compete
+        interaction produces new individuals
+        competition eliminates weak individuals
+    After multiple generations a strong individual should be found
+    "simulated evolution" via randomized beam search
+    
+    Mechanisms of evolutionary change:
+        crossover: the random exchange of parents' traits during reproduction
+        requires genetic diversity aomong parents to ensure sufficiently varied offspring
+        Mutation: at each generation, the offspring is tweaked randomly with small probability
