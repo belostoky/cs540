@@ -41,8 +41,7 @@ public class DecisionTreeImpl extends DecisionTree {
 		this.attributeValues = train.attributeValues;
 		// TODO: add code here
 
-        //root = build_tree(train, copy_attrs(attributes), null, null, null);
-        root = build_treeNEW(train.instances, copy_attrs(attributes), 1, 1);
+        root = build_tree(train.instances, copy_attrs(attributes), 1, 1);
 
 	}
 
@@ -71,13 +70,14 @@ public class DecisionTreeImpl extends DecisionTree {
         //which will be the case if the node isn't terminal but doesn't have a child
         //with an attribute value equal to that of this instance
         boolean node_has_changed = true;
-        while (!node.terminal) {
+        while (!node.terminal && node_has_changed) {
             //find child node with matching attribute value for node's attribute
             node_has_changed = false;
             for (DecTreeNode child : node.children) {
-                if (child.parentAttributeValue.intValue() == instance.attributes.get(node.attribute).intValue()) {
+                if (child.parentAttributeValue.intValue() == instance.attributes.get(node.attribute.intValue()).intValue()) {
                     node_has_changed = true;
                     node = child;
+                    break;
                 }
             }
         }
@@ -130,16 +130,20 @@ public class DecisionTreeImpl extends DecisionTree {
 		this.attributes = train.attributes;
 		this.attributeValues = train.attributeValues;
 		// TODO: add code here
+
+        for (String attribute : attributes) {
+            System.out.format(
+              "%s %.5f\n",
+              attribute,
+              info_gain(attribute, train.instances)
+            );
+        }
 	}
 
-    private float info_gain(String attr, DataSet training_data) {
-        return 0.0f;
-    }
-    
     private float entropy(List<Instance> instances) {
         float sum = 0.0f;
-        int matches = 0;
         for (String label : labels) {
+            int matches = 0;
             int label_index = labels.indexOf(label);
             for (Instance instance : instances) {
                 if (instance.label.intValue() == label_index) {
@@ -147,7 +151,10 @@ public class DecisionTreeImpl extends DecisionTree {
                 }
             }
             float prob = ((float)matches)/((float)instances.size());
-            sum -= prob * Math.log(prob)/Math.log(2.0);
+            if (instances.size() != 0 && prob > 0.0f) {
+                sum -= prob * Math.log(prob)/Math.log(2.0);
+            }
+
         }
         return sum;
     }
@@ -155,15 +162,17 @@ public class DecisionTreeImpl extends DecisionTree {
 
     private float entropy(List<Instance> instances, String attr) {
         //entropy(attr) = sum_over_values(prob(attr = value)*entropy(attr, value))
-        int matches = 0;
         float sum = 0.0f;
         for (String value : attributeValues.get(attr)) {
+            int matches = 0;
             for (Instance instance : instances) {
                 if (instance.attributes.get(attributes.indexOf(attr)).intValue() == attributeValues.get(attr).indexOf(value)) {
                     ++matches;
                 }
             }
-            sum += ((float)matches)/((float)instances.size())*entropy(instances, attr, value);
+            if (instances.size() != 0) {
+                sum += ((float)matches)/((float)instances.size())*entropy(instances, attr, value);
+            }
         }
 
         return sum;
@@ -179,16 +188,18 @@ public class DecisionTreeImpl extends DecisionTree {
             }
         }
 
-        int matches = 0;
         for (String label : labels) {
+            int matches = 0;
             int label_index = labels.indexOf(label);
             for (Instance instance : matching_instances) {
                 if (instance.label.intValue() == label_index) {
                     ++matches;
                 }
             }
-            float prob = ((float)matches)/((float)instances.size());
-            sum -= prob * Math.log(prob)/Math.log(2.0);
+            float prob = ((float)matches)/((float)matching_instances.size());
+            if (matching_instances.size() != 0 && prob > 0.0f) {
+                sum -= prob * Math.log(prob)/Math.log(2.0);
+            }
         }
         return sum;
     }
@@ -199,8 +210,7 @@ public class DecisionTreeImpl extends DecisionTree {
     }
 
 
-//TODO: remove some whitespace
-    private DecTreeNode build_treeNEW (
+    private DecTreeNode build_tree (
         List<Instance> instances,
         List<String> attrs,
         Integer default_label,
@@ -215,9 +225,8 @@ public class DecisionTreeImpl extends DecisionTree {
             );
         }
         if (attrs.isEmpty()) {
-            
             return new DecTreeNode(
-              get_plurality_labelNEW(instances),
+              get_plurality_label (instances),
               null,
               value,
               true
@@ -258,7 +267,7 @@ public class DecisionTreeImpl extends DecisionTree {
         attr_index = attributes.indexOf(max_gain_attr);
         DecTreeNode this_node;
         String attr_val;
-        label = get_plurality_labelNEW(instances);
+        label = get_plurality_label(instances);
         this_node = new DecTreeNode(
           new Integer(label),
           new Integer(attr_index),
@@ -267,6 +276,9 @@ public class DecisionTreeImpl extends DecisionTree {
         );
 
         List<String> attr_vals = attributeValues.get(max_gain_attr);
+        if (attr_vals == null) {
+            return this_node;
+        }
         for (String val : attr_vals) {
             val_index = attr_vals.indexOf(val);
             List<Instance> filtered_instances = new ArrayList<Instance>();
@@ -276,81 +288,13 @@ public class DecisionTreeImpl extends DecisionTree {
                 }
             }
             List<String> filtered_attrs = copy_attrs(attrs);
-            this_node.children.add(build_treeNEW(filtered_instances, filtered_attrs, default_label, val_index));
+            filtered_attrs.remove(max_gain_attr);
+            this_node.children.add(build_tree(filtered_instances, filtered_attrs, default_label, val_index));
         }
 
         return this_node;
     }
 
-    private DecTreeNode build_tree (
-        DataSet training_data,
-        List<String> attrs,
-        String value,
-        List<Integer> attr_path,
-        List<Integer> val_path
-    ) {
-        //calculate the attribute giving the best gain at this node
-        float max_gain = -1;
-        String max_gain_attr = "";
-        boolean terminal = false;
-        for (String attr : attrs) {
-            float gain = info_gain(attr, training_data);
-            if (gain > max_gain) {
-                max_gain_attr = attr;
-                max_gain = gain;
-            }
-        }
-        //by creating the other copy of attrs, I've probably done something I shouldn't have.
-        int attr_index = 0, val_index = 0;
-        if (!attrs.isEmpty()) {
-            attr_index = attributes.indexOf(max_gain_attr);
-            attr_path.add(new Integer(attr_index));
-        }
-        if (training_data.attributeValues.get(max_gain_attr).size() == 0) {
-            terminal = true;
-        }
-        DecTreeNode this_node;
-        String attr_val;
-        if (value == null) {
-            // the below is not necessary - since the types are now compatible, just don't add
-            // value
-            //the root node has no attribute value
-            //attr_val = null;
-        } else {
-            //attr_val = new (training_data.attributeValues.indexOf(value));
-            //val_path.add(attr_val);
-            List<String> vals = attributeValues.get(max_gain_attr);
-            val_index = new Integer(vals.indexOf(value));
-            val_path.add(val_index);
-        }
-        if (!terminal) {
-            int label = get_plurality_label(attr_path, val_path, training_data.instances);
-            this_node = new DecTreeNode(
-              new Integer(label),
-              new Integer(attr_index),
-              val_index,
-              terminal 
-            );
-        } else {
-            int label = get_plurality_label(attr_path, val_path, training_data.instances);
-
-            //Now that we have the plurality class, assign this terminal node that for a label.
-            this_node = new DecTreeNode(
-                new Integer(label),
-                null,
-                val_index,
-                terminal
-            );
-        }
-
-        if (value != null) {
-            List<String> attr_vals = training_data.attributeValues.get(max_gain_attr);
-            for (String val : attr_vals) {
-                this_node.children.add(build_tree(training_data, attrs, val, attr_path, val_path));
-            }
-        }
-        return this_node;
-    }
 
     private List<String> copy_attrs(List<String> attributes) {
         //pretty sure this will have to be a new ArrayList<String>();
@@ -362,18 +306,18 @@ public class DecisionTreeImpl extends DecisionTree {
     }
 
     private float acc(DataSet tuning_data) {
-        int instance_count = 0;
         int correct_classification_count = 0;
         for (Instance instance : tuning_data.instances) {
-            ++instance_count;
-            if (tuning_data.labels.get(instance.label.intValue()) == classify(instance)) {
+            int instance_label_index = instance.label.intValue();
+            String instance_label_value = tuning_data.labels.get(instance_label_index);
+            if (instance_label_value.equals(classify(instance))) {
                 ++correct_classification_count;
             }
         }
-        return ((float)correct_classification_count)/((float)instance_count);
+        return ((float)correct_classification_count)/((float)tuning_data.instances.size());
     }
 
-    private int get_plurality_labelNEW(List<Instance> instances) {
+    private int get_plurality_label(List<Instance> instances) {
 
         //count the number of occurences of each label along this path
         //there's definitely a better way to do this
@@ -406,54 +350,6 @@ public class DecisionTreeImpl extends DecisionTree {
         return plurality_label;
     }
 
-    private int get_plurality_label(List<Integer> attr_path, List<Integer> val_path, List<Instance> instances) {
-        //this is a terminal node, so find the path back to root (it's conveniently stored)
-        //and calculate the majority class for that path
-        //iterate through instances to find those whose paths match this path
-        ArrayList<Instance> matches = new ArrayList<Instance>();
-
-        //find all instances matching this path
-        for (Instance instance : instances) {
-            boolean match = true;
-            for (int i = 0; i < val_path.size(); i++) {
-                if ( instance.attributes.get(attr_path.get(i)) != val_path.get((i)) ) {
-                    match = false;
-                }
-            }
-            if (match) {
-                matches.add(instance);
-            }
-        }
-
-        //count the number of occurences of each label along this path
-        //there's definitely a better way to do this
-        ArrayList<Integer> labels = new ArrayList<Integer>();
-        ArrayList<Integer> counts = new ArrayList<Integer>();
-        for (Instance match : matches) {
-            if (labels.contains(match.label)) {
-                int label_index = labels.indexOf(match.label);
-                counts.set(label_index, counts.get(label_index) + 1);
-            } else {
-                labels.add(match.label);
-                counts.add(1);
-            }
-        }
-
-        //find maximum count
-        //the order of labels here is effectively random,
-        //so using the first element in the list with the maximum count
-        //effectively breaks ties randomly
-        Integer max_count = -1;
-        Integer plurality_label = -1;
-        for (int i = 0; i < counts.size(); i++) {
-            if (max_count < counts.get(i)) {
-                max_count = counts.get(i);
-                plurality_label = labels.get(i);
-            }
-        }
-        return plurality_label;
-    }
-
 
     private void tune(DataSet tuning_data) {
         Stack<DecTreeNode> stack = new Stack<DecTreeNode>();
@@ -465,18 +361,19 @@ public class DecisionTreeImpl extends DecisionTree {
         DecTreeNode best_accuracy_node = null;
         while (!stack.isEmpty()) {
             DecTreeNode node = stack.pop();
-            for (DecTreeNode child : node.children) {
-                stack.push(child);
+            if (node.children != null) {
+                for (DecTreeNode child : node.children) {
+                    stack.push(child);
+                }
             }
             if (!node.terminal) {
                 node.terminal = true;
-                //not sure what my plan was with this
-                //accuracy.put(node, new Float(acc(tuning_data)));
                 float accuracy = acc(tuning_data);
                 if (accuracy > max_acc) {
-                    max_acc = acc(tuning_data);
+                    max_acc = accuracy;
                     best_accuracy_node = node;
                 }
+                node.terminal = false;
             }
         }
         best_accuracy_node.terminal = true;
