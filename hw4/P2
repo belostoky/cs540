@@ -1,0 +1,164 @@
+2a
+    a   1
+    b   1 3
+    c     3
+    d   123
+    e    2
+    f   1 3
+    g   1 3
+
+2b
+  a=1
+    a   1
+    b   123
+    c    23
+    d   123
+    e    23
+    f   123
+    g   123
+
+ b=1
+    a   1
+    b   1
+    c    23
+    d    23
+    e    23
+    f    23
+    g    23
+
+  c=2
+    a   1
+    b   1
+    c    2
+    d    23
+    e     3
+    f    23
+    g    23
+
+  d=2
+    a   1
+    b   1
+    c    2
+    d    2
+    e     3
+    f     3
+    g    23
+
+  e=3
+    a   1
+    b   1
+    c    2
+    d    2
+    e     3
+    f   
+    g    23
+
+  backtrack, d=3
+    a   1
+    b   1
+    c    2
+    d     3
+    e     3
+    f    2
+    g     3
+
+  e=3
+    a   1
+    b   1
+    c    2
+    d     3
+    e     3
+    f    2
+    g     
+
+backtrack c=3
+    a   1
+    b   1
+    c     3
+    d    23
+    e    2 
+    f     3
+    g      
+
+  d=2
+    a   1
+    b   1
+    c     3
+    d    2 
+    e    2 
+    f     3
+    g    2 
+SOLUTION!
+
+2c
+    a   1
+    b   1
+    c    2
+    d    23
+    e     3
+    f    23
+    g    23
+
+2d
+    a   123
+    b   123
+    c   123
+    d   123
+    e   123
+    f   123
+    g   123
+
+a=1
+    a   1
+    b   123
+    c    23
+    d   123
+    e    23
+    f   123
+    g   123
+
+b=1
+    a   1
+    b   1  
+    c    23
+    d    23
+    e    23
+    f    23
+    g    23
+
+c=2
+    a   1
+    b   1  
+    c    2
+    d     3
+    e     3
+    f    2 
+    g      
+
+backtrack c=3
+    a   1
+    b   1  
+    c     3
+    d    2 
+    e    2 
+    f     3
+    g      
+
+backtrack b=2
+    a   1
+    b    2 
+    c    23
+    d   1 3
+    e    23
+    f   1 3
+    g   1 3
+
+c=2
+    a   1
+    b    2 
+    c    2
+    d     3
+    e     3
+    f   1
+    g     3
+SOLUTION!
