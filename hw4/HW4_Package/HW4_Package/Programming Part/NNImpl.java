@@ -116,11 +116,23 @@ public class NNImpl{
 	
 	public void train()
 	{
+        double alpha = learningRate;
 		// TODO: add code here
-		
-		
-		
+        for (Instance instance : trainingset) {
+            double prediction = calculateOutputForInstance(instance);
+            int desired_output = instance.classValue;
+            double error = (double) desired_output - prediction;
+            for (int i = 0; i < inputNodes.size(); i++) {
+                Node input = inputNodes.get(i);
+                for (int j = 0; j < hiddenNodes.size(); j++) {
+                    Node hidden = hiddenNodes.get(j);
+                    double output_weight = outputNode.parents.get(j);
+                    delta_w_ij = alpha * input.getOutput() * hidden.getOutput() * output_weight * error * prediction * (1.0 - prediction);
+                    hidden.parents.get(i).weight += delta_w_ij;
+                }
+            }
+        }
+
 	}
-	
 
 }
