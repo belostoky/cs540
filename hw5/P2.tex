@@ -61,9 +61,23 @@
             $$P(L|T) = \frac{P(T|L)P(L)}{P(T|L)P(L) + P(T|\neg L)P(\neg L)} = \frac{0.09025}{0.09025+0.181} = \frac{0.09025}{0.27125} \approx 0.332719$$
             %361/4000 / (217/800)
             %361/1085
+            We can now use the same calculations as above, but assuming the probability of lightning is $P(L|T)$.
+            $$P(F) = 0.5P(L)P(C) + 0.4P(L)P(\neg C) + 0.1P(\neg L)P(C) + 0.01P(\neg L)P(\neg C)$$
+            $$ \approx 0.5\times0.332719\times0.75 + 0.4\times0.332719\times0.25 + 0.1\times0.667281\times0.75 + 0.01\times0.667281\times0.25$$
+            $$ = 0.124770 + 0.033272 + 0.050046 + 0.001668 = 0.207956$$
 
         %2c
         \item
+            To compute the probability of a storm given a forest fire, we first have to compute the probability of lightning given the same.
+            To do so using what we know, we need to make use of a few rules:
+            $$P(L|F) = \frac{P(F|L)P(L)}{P(F)}$$
+            $$P(F|L) = \frac{P(F,L)}{P(L)}$$
+            $$P(F,L) = P(F,L,C) + P(F,L,\neg C) = P(F|L,C)P(L|C)P(C) + P(F|L,\neg C)P(L|\neg C)P(\neg C)$$
+            $$ = 0.5\times0.095\times0.75 + 0.4\times0.095\times0.25 = 0.035625 + 0.0095 = 0.045125$$
+            $$P(F|L) = \frac{P(F,L}{P(L)} = \frac{0.045125}{0.095} = 0.475$$
+            $$P(L|F) = \frac{P(F|L)P(L)}{P(F)} = \frac{0.475\times0.095}{0.1152625} \approx 0.391498 $$
+            Now we can calculate $P(S|L)$, only using $P(L|F)$ in place of $P(L)$.
+            $$P(S|L) = \frac{P(L|S)P(S)}{P(L)} \approx \frac{0.5\times0.1}{0.391498} \approx 0.127715 $$
 
         %2d
         \item
