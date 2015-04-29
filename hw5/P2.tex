@@ -1,0 +1,95 @@
+%This is the homework 2 latex file for problem 2
+
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage[margin=2cm]{geometry}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\pagestyle{fancy}
+
+
+\begin{document}
+\fancyhfoffset[L]{0cm}
+\fancyhfoffset[R]{0cm}
+\chead{Tyler Ayrton Stank}
+\rhead{\today}
+
+\begin{enumerate}
+    \setcounter{enumi}{1}
+    %2
+    \item
+    \begin{enumerate}
+        %2a
+        \item
+            Assume the following random variables:\\
+            \begin{itemize}
+                \item
+                L : Lightning
+
+                \item
+                S : Storm
+
+                \item
+                C : Camp Fire
+
+                \item
+                F : Forest Fire
+            \end{itemize}
+            $$P(F) = \sum_{\text{Possible values for L,C}} P(F|L,C)\times P(L,C)$$
+            $$ = 0.5P(L)P(C) + 0.4P(L)P(\neg C) + 0.1P(\neg L)P(C) + 0.01P(\neg L)P(\neg C)$$
+            $P(C)$ is given; we now have to compute $P(L)$.
+            $$P(L) = 0.5P(S) + 0.05P(\neg S) = 0.05 + 0.045 = 0.095$$
+            $$P(\neg L) = 0.5P(S) + 0.95P(\neg S) = 0.05 + 0.855 = 0.905 = 1 - P(L)$$
+            With those calculations (as well as a sanity check), we can revisit the original question.
+            $$P(F) = 0.5\times0.095\times0.75 +
+                0.4\times0.095\times0.25 + 
+                0.1\times0.905\times0.75 +
+                0.01\times0.905\times0.25$$
+            $$ = 0.035625 + 0.009500 + 0.067875 + 0.0022625 = 0.1152625 $$
+
+        %2b
+        \item
+            Thunder has no influence on the probability of a camp fire (though I doubt the truth of that in the real world), but it does change the probability of lightning--
+            $$P(L|T) = \frac{P(T|L)P(L)}{P(T)} = \frac{P(T|L)P(L)}{P(T|L)P(L) + P(T|\neg L)P(\neg L)}$$
+            $$P(T|L)P(L) = 0.95 \times 0.095 = 0.09025$$
+            $$P(T|\neg L)P(\neg L) = 0.2\times 0.905 = 0.181$$
+            $$P(L|T) = \frac{P(T|L)P(L)}{P(T|L)P(L) + P(T|\neg L)P(\neg L)} = \frac{0.09025}{0.09025+0.181} = \frac{0.09025}{0.27125} \approx 0.332719$$
+            %361/4000 / (217/800)
+            %361/1085
+
+        %2c
+        \item
+
+        %2d
+        \item
+
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
