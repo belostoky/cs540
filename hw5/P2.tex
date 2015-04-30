@@ -74,13 +74,26 @@
             $$P(F|L) = \frac{P(F,L)}{P(L)}$$
             $$P(F,L) = P(F,L,C) + P(F,L,\neg C) = P(F|L,C)P(L|C)P(C) + P(F|L,\neg C)P(L|\neg C)P(\neg C)$$
             $$ = 0.5\times0.095\times0.75 + 0.4\times0.095\times0.25 = 0.035625 + 0.0095 = 0.045125$$
-            $$P(F|L) = \frac{P(F,L}{P(L)} = \frac{0.045125}{0.095} = 0.475$$
+            $$P(F|L) = \frac{P(F,L)}{P(L)} = \frac{0.045125}{0.095} = 0.475$$
             $$P(L|F) = \frac{P(F|L)P(L)}{P(F)} = \frac{0.475\times0.095}{0.1152625} \approx 0.391498 $$
-            Now we can calculate $P(S|L)$, only using $P(L|F)$ in place of $P(L)$.
-            $$P(S|L) = \frac{P(L|S)P(S)}{P(L)} \approx \frac{0.5\times0.1}{0.391498} \approx 0.127715 $$
+            %Now we can calculate $P(S|L)$, only using $P(L|F)$ in place of $P(L)$.
+            %$$P(S|L) = \frac{P(L|S)P(S)}{P(L)} \approx \frac{0.5\times0.1}{0.391498} \approx 0.127715 $$
+            Now we can calculate $P(S)$ conditionally, using $P(L|F)$ in place of $P(L)$.
+            Or something.  Turns out my calculations all use circular logic and don't make much sense.
 
         %2d
         \item
+            $$P(L|\neg S) = 0.05; P(\neg L|\neg S)=0.95$$
+            $$P(T|\neg S) = P(T|\neg S, L)P(L|\neg S) + P(T|\neg S,\neg L)P(\neg L|\neg S) = $$
+            $$ = P(T|\neg S, L)\times0.05 + P(T|\neg S,\neg L)\times0.95$$
+            What even?
+
+        \item
+            $$P(C,F) = P(F|C)P(C)$$
+            $$ = \Big ( P(F|C,L)P(L) + P(F|C,\neg L)P(\neg L) \Big ) \times P(C) $$
+            $$ = ( 0.5\times0.095 + 0.1\times0.905 ) \times 0.75 $$
+            $$ = (0.0475 + 0.0905) \times 0.75 = 0.138\times0.75 = 0.1035 $$
+            
 
     \end{enumerate}
 \end{enumerate}
