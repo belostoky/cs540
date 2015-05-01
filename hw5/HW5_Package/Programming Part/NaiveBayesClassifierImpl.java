@@ -42,9 +42,9 @@ public class NaiveBayesClassifierImpl implements NaiveBayesClassifier {
             labelCount.remove(instance.label);
             labelCount.put(instance.label, ++label_count);
 
-            int label_token_count = labelTokenCount.get(instance.label);
-            labelTokenCount.remove(instance.label);
-            labelTokenCount.put(instance.label, label_token_count + instance.words.length);
+            int label_token_count = labelTokenCount.get(label);
+            labelTokenCount.remove(label);
+            labelTokenCount.put(label, label_token_count + instance.words.length);
 
             //this one's a little trickier.
             for (String word : instance.words) {
